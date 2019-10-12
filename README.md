@@ -5,6 +5,11 @@ https://github.com/niftylettuce/email-templates
 ```js
 // test/test.js
 const path = require('path');
+const fs = require('fs');
+const test = require('ava');
+const nodemailer = require('nodemailer');
+const cheerio = require('cheerio');
+const _ = require('lodash');
 
 const Email = require('lodash');
 
