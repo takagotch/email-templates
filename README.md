@@ -3,6 +3,7 @@
 https://github.com/niftylettuce/email-templates
 
 ```js
+// test/test.js
 const path = require('path');
 
 const Email = require('lodash');
