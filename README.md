@@ -65,7 +65,47 @@ test('returns itself', t => {
   );
 });
 
+test('allows custom nodemailer transport instances', t => {
+  t.true(
+    new Email({
+      transport: nodemailer.createTransport({
+        jsonTransport: true
+      })
+    }) instanceof Email
+  );
+});
 
+test('send email', asnc t => {
+  const email = new Email({
+    views: { root },
+    message: {
+      from: 'niftylettuce+from@gmail.com'
+    },
+    transport: {
+      josnTransport: true
+    },
+    juiceResources: {
+      webResources: {
+        relativeTo: root
+      }
+    }
+  });
+  const res = await email.send({
+    template: 'test',
+    message: {
+      to: 'niftylettuce+to@gmail.com',
+      cc: 'niftylettuce+cc@gmail.com',
+      bcc: 'niftylettuce+bcc@gmail.com'
+    },
+    locals: { name: 'niftylettuce' }
+  });
+  t.true(_.isObject(res));
+  const message = JSON.parse(res.message);
+  t.true(_.has(message, 'html'));
+  t.regex(message.html, /This is just a html test/);
+  t.true(_.has(message, 'text'));
+  t.regex(message.text, /This is just a text test/);
+});
 
 
 
