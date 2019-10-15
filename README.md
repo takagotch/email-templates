@@ -121,7 +121,29 @@ test('send email', asnc t => {
 
 
 
-
+test('should throw an error when tmpl dir exists but no props', async t => {
+  const email = new Email({
+    views: { root },
+    message: {
+      from: 'niftylettuce+from@gmail.com'
+    },
+    transport: {
+      jsonTransport: true
+    },
+    juiceResources: {
+      webResource: {
+        relativeTo: root
+      }
+    }
+  });
+  const error = await t.throwAsync(
+    email.send({
+      template: 'this-template-dir-is-empty',
+      message: { to: 'niftylettue+to@gmail.com' }
+    });
+  );
+  t.regex(error.message, /No content was passed/);
+});
 ```
 
 ```
